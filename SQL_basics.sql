@@ -57,3 +57,63 @@ SET SQL_SAFE_UPDATES = 0;
 DELETE FROM users;
 TRUNCATE user_groups;
 DROP TABLE users;
+
+# lesson 3
+INSERT INTO departments(name)
+VALUES ('R&D'), ('Service Desk'), ('Maintenance'), ('Very secret Department');
+INSERT INTO employees(name, department_id)
+VALUES
+('Ola', 1),
+('Marcin', 1),
+('Anna', 2),
+('Jacek', 3),
+('Mateusz', NULL),
+('Kamila', NULL),
+('Artur', 3);
+
+# inner join
+SELECT employees.name, departments.name
+FROM employees JOIN departments
+ON employees.department_id = departments.id;
+
+# left join
+SELECT employees.name, departments.name
+FROM employees LEFT JOIN departments
+ON employees.department_id = departments.id;
+
+# right join
+SELECT employees.name, departments.name
+FROM employees RIGHT JOIN departments
+ON employees.department_id = departments.id;
+
+# full join
+SELECT employees.name, departments.name
+FROM employees LEFT JOIN departments
+ON employees.department_id = departments.id
+UNION
+SELECT employees.name, departments.name
+FROM employees RIGHT JOIN departments
+ON employees.department_id = departments.id;
+
+# left join without the intersection
+SELECT employees.name, departments.name
+FROM employees LEFT JOIN departments
+ON employees.department_id = departments.id
+WHERE departments.id IS NULL;
+
+# right join without the intersection
+SELECT employees.name, departments.name
+FROM employees RIGHT JOIN departments
+ON employees.department_id = departments.id
+WHERE employees.department_id IS NULL;
+
+# full join without the intersection
+SELECT employees.name, departments.name
+FROM employees LEFT JOIN departments
+ON employees.department_id = departments.id
+WHERE employees.department_id IS NULL OR departments.id IS NULL
+UNION ALL
+SELECT employees.name, departments.name
+FROM employees RIGHT JOIN departments
+ON employees.department_id = departments.id
+WHERE employees.department_id IS NULL OR departments.id IS NULL;
